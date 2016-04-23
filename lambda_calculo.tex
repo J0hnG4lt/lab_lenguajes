@@ -1,0 +1,175 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\begin{document}
+
+
+\section*{}
+
+\begin{center}
+Universidad Simón Bolívar
+\\Departamento de Computación y Tecnología de la Información
+\\Asignatura: CI3661
+\\Sección: 2
+\\Nombre: Georvic Tur 
+\\Carnet: 12-11402
+
+\section*{Tarea 1}
+
+\end{center}
+
+
+\subsection*{Parte 1}
+
+\begin{enumerate}
+
+\item Consideremos que los tokens CONS, HEAD y TAIL son abreviaciones de los términos:
+
+\begin{center}
+
+$\lambda a . \lambda b . \lambda f . f\  a\  b$
+\\$\lambda c . c (\lambda a . \lambda b . a)$
+\\$\lambda c . c (\lambda a . \lambda b . b)$
+
+\end{center}
+
+respectivamente. Resduzca hasta su forma normal el término TAIL (CONS p q) mostrando paso a paso cada reducción.
+
+\subsubsection*{Respuesta:}
+
+\begin{align*}
+&TAIL\ ( CONS\ p\ q )
+\\&= TAIL\ ((\lambda a . \lambda b . \lambda f . f \  a \  b) \  p \  q)
+\\&\rightarrow TAIL\  ((\lambda b . \lambda f . f \  p \  b)\  q)
+\\&\rightarrow TAIL\  (\lambda f . f\ p\ q)
+\\&= (\lambda c.c\ (\lambda a . \lambda b . b))\ (\lambda f . f\ p\ q)
+\\&\rightarrow (\lambda f.f\ p\ q)\ (\lambda a.\lambda b.b)
+\\&\rightarrow (\lambda a. \lambda b.b)\ (p\ q)
+\\&\rightarrow (\lambda b.b)\ q
+\\&\rightarrow \ q
+\end{align*}
+
+
+\item Si abreviamos por REST A al término:
+
+\begin{center}
+$
+\lambda x_0 .\lambda x_1 . x_0 (\lambda x_0 .\lambda x_1 .\lambda x_2 . x0 (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 )) x_1
+$
+\end{center}
+
+y por 1 y 4 a los términos $ \lambda x_0 .\lambda x_1 . x_0 x_1 $ y $ \lambda x_0 . \lambda x_1 . x_0 ( x_0 ( x_0 ( x_0 x_1 ))) $ respectivamente, entonces calcule la forma normal del término REST A 1 4, mostrando paso a paso cada reducción.
+
+
+\subsubsection*{Respuesta:}
+\begin{align*}
+&RESTA\ 1\ 4
+\\&= \lambda x_0 .\lambda x_1 . x_0 (\lambda x_0 .\lambda x_1 .\lambda x_2 . x0 (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 )) x_1\ 1\ 4
+\\&\rightarrow \lambda x_1 . 1\ (\lambda x_0 .\lambda x_1 .\lambda x_2 . x0 (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 )) x_1\ 4
+\\&= \lambda x_1 . ( \lambda x_0 .\lambda x_1 . x_0 x_1)(\lambda x_0 .\lambda x_1 .\lambda x_2 . x0 (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 )) x_1\ 4
+\\&\rightarrow ( \lambda x_0 .\lambda x_1 . x_0 x_1)(\lambda x_0 .\lambda x_1 .\lambda x_2 . x0 (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 ))\ 4
+\\&\rightarrow (\lambda x_1 . ((\lambda x_0 .\lambda x_1 .\lambda x_2 . x0 (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 ))) x_1)\ 4
+\\&\rightarrow (((\lambda x_0 .\lambda x_1 .\lambda x_2 . x0 (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 )))\ 4)
+\\&\rightarrow (((\lambda x_1 .\lambda x_2 . 4\ (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 ))))
+\\&\rightarrow (((\lambda x_1 .\lambda x_2 . (\lambda x_0 . \lambda x_1 . x_0 ( x_0 ( x_0 ( x_0 x_1 ))))(\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )(\lambda x_5 . x_5 ))))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .(\lambda x_1 . (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))\\&\ \ ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) x_1 ))))\\&\ \ (\lambda x_5 . x_2 )(\lambda x_5 . x_5 ))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 . ((\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))\\&\ \ (\lambda x_5 . x_2 ) ))))(\lambda x_5 . x_5 ))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .(\lambda x_4 . x_4 ( ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 ) ))) x_1 ))\\&\ \ (\lambda x_5 . x_5 ))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .(\lambda x_5 . x_5 )(( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 ) ))) x_1 ))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .(((\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 ) ))) x_1 ))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .((\lambda x_4 . x_4 ( ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 ) )) x_1 )) x_1 ))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 . (x_1 ( ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 )) ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 ) )) x_1 )))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .(x_1 ((\lambda x_4 . x_4 ( ( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )) x_1 )) x_1 )))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .(x_1(x_1(( (\lambda x_3 .\lambda x_4 . x_4 ( x_3 x_1 ))(\lambda x_5 . x_2 )) x_1 ) )))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 . (x_1(x_1(( \lambda x_4 . x_4 ((\lambda x_5 . x_2 ) x_1 ) ) x_1 ))))
+\\&\rightarrow (\lambda x_1 .\lambda x_2 .x_1(x_1(x_1 ((\lambda x_5 . x_2 ) x_1 ))) )
+\\&\rightarrow (\lambda x_1 .\lambda x_2 . x_1( x_1( (x_1\ x_2 ))))
+\\&= (\lambda x_0 .\lambda x_1 . x_0( x_0( (x_0\ x_1 ))))
+\\&=\ 3
+\end{align*}
+
+\end{enumerate}
+
+
+\subsection*{Parte 2}
+
+\begin{enumerate}
+
+\item Basado en el marco teórico expuesto anteriormente, plantee un esquema de recursión para la función de Fibonacci (que abeviaremos FIB) usando las operaciones IF , +, \textasteriskcentered, =.
+
+\subsubsection*{Respuesta:}
+Se puede usar el siguiente esquema:
+\begin{align*}
+&FIB=(\lambda n . FIB'\ 0\ 1\ 0\ n)
+\\&FIB'=(\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
+\end{align*}
+
+
+
+
+\item Usando el $\lambda-t \acute ermino$ y determine un $\lambda-t \acute ermino$ válido que compute la función de Fibonacci
+
+\begin{align*}
+&FIB=(\lambda n . FIB'\ 0\ 1\ 0\ n)
+\\&FIB'=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'
+\end{align*}
+lo cual se puede escribir como:
+\begin{align*}
+&FIB'=H\ FIB'
+\\&donde
+\\& H=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
+\end{align*}
+
+Como $Y\ H' = H'\ (Y\ H')$ se satisface para todo $H'$ si $Y=(\lambda x_0 . (\lambda x_1 . x_0\ (x_1\ x_1))(\lambda x_1 . x_0\ (x_1\ x_1)))$, se tiene que:
+
+\begin{align*}
+&Y\ H\ = Y\ (\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
+\end{align*}
+
+es el término FIB buscado.
+
+\subsubsection*{Respuesta:}
+
+
+\item Usando el $\lambda-t \acute ermino$ que obtuvo en la pregunta anterior, calcule FIB 2 haciendo todas las reducciones correspondientes paso a paso.
+
+\subsubsection*{Respuesta:}
+
+\begin{align*}
+&FIB\ 2
+\\&=(\lambda n . FIB'\ 0\ 1\ 0\ n)\ 2
+\\&\rightarrow FIB'\ 0\ 1\ 0\ 2
+\\&=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'\ 0\ 1\ 0\ 2
+\\&\rightarrow (\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ 0\ 1\ 0\ 2
+\\&\rightarrow (\lambda b . \lambda j . \lambda n . IF (=\ j\ n)\ b\ (FIB'\ b\ (+\ 0\ b)\ (+\ j\ 1)\ n))\ 1\ 0\ 2
+\\&\rightarrow (\lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ j\ 1)\ n))\ 0\ 2
+\\&\rightarrow (\lambda n . IF\ (=\ 0\ n)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ n))\ 2
+\\&\rightarrow (IF\ (=\ 0\ 2)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))
+\\&\rightarrow (IF\ (FALSE)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))
+\\&\rightarrow (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2)
+\\&\rightarrow (FIB'\ 1\ 1\ (+\ 0\ 1)\ 2)
+\\&\rightarrow (FIB'\ 1\ 1\ 1\ 2)
+\\&=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'\ 1\ 1\ 1\ 2
+\\&\rightarrow(\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ 1\ 1\ 1\ 2
+\\&\rightarrow(\lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ 1\ b)\ (+\ j\ 1)\ n))\ 1\ 1\ 2
+\\&\rightarrow(\lambda j . \lambda n . IF\ (=\ j\ n)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ j\ 1)\ n))\ 1\ 2
+\\&\rightarrow(\lambda n . IF\ (=\ 1\ n)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ n))\ 2
+\\&\rightarrow(IF\ (=\ 1\ 2)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))
+\\&\rightarrow(IF\ (FALSE)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))
+\\&\rightarrow (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2)
+\\&\rightarrow (FIB'\ 1\ 2\ (+\ 1\ 1)\ 2)
+\\&\rightarrow (FIB'\ 1\ 2\ 2\ 2)
+\\&=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'\ 1\ 2\ 2\ 2
+\\&\rightarrow(\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ 1\ 2\ 2\ 2
+\\&\rightarrow(\lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ 1\ b)\ (+\ j\ 1)\ n))\ 2\ 2\ 2
+\\&\rightarrow(\lambda j . \lambda n . IF\ (=\ j\ n)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ j\ 1)\ n))\ 2\ 2
+\\&\rightarrow(\lambda n . IF\ (=\ 2\ n)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ n))\ 2
+\\&\rightarrow(IF\ (=\ 2\ 2)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2))
+\\&\rightarrow(IF\ (TRUE)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2))
+\\&\rightarrow\ 2
+\end{align*}
+
+\end{enumerate}
+
+\end{document}
