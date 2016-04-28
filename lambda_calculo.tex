@@ -101,8 +101,9 @@ y por 1 y 4 a los términos $ \lambda x_0 .\lambda x_1 . x_0 x_1 $ y $ \lambda x
 \subsubsection*{Respuesta:}
 Se puede usar el siguiente esquema:
 \begin{align*}
-&FIB=(\lambda n . FIB'\ 0\ 1\ 0\ n)
-\\&FIB'=(\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
+&FIB=(\lambda m . FIB'\ 0\ 1\ 0\ m)
+%\\&FIB'=(\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
+\\&FIB'=(\lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ b\ (FIB'\ a\ (+\ a\ b)\ (+\ j\ 1)\ n))))
 \end{align*}
 
 
@@ -111,20 +112,21 @@ Se puede usar el siguiente esquema:
 \item Usando el $\lambda-t \acute ermino$ y determine un $\lambda-t \acute ermino$ válido que compute la función de Fibonacci
 
 \begin{align*}
-&FIB=(\lambda n . FIB'\ 0\ 1\ 0\ n)
-\\&FIB'=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'
+&FIB=(\lambda m . FIB'\ 0\ 1\ 0\ m)
+%\\&FIB'=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . )\ FIB'
+\\&FIB'=((\lambda x . \lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n)))) FIB')
 \end{align*}
 lo cual se puede escribir como:
 \begin{align*}
 &FIB'=H\ FIB'
 \\&donde
-\\& H=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
+\\& H=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ a\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
 \end{align*}
 
 Como $Y\ H' = H'\ (Y\ H')$ se satisface para todo $H'$ si $Y=(\lambda x_0 . (\lambda x_1 . x_0\ (x_1\ x_1))(\lambda x_1 . x_0\ (x_1\ x_1)))$, se tiene que:
 
 \begin{align*}
-&Y\ H\ = Y\ (\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))
+&Y\ H\ = Y\ (\lambda x . \lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n)))) 
 \end{align*}
 
 es el término FIB buscado.
@@ -138,36 +140,45 @@ es el término FIB buscado.
 
 \begin{align*}
 &FIB\ 2
-\\&=(\lambda n . FIB'\ 0\ 1\ 0\ n)\ 2
+\\&=(\lambda m . FIB'\ 0\ 1\ 0\ m)\ 2
 \\&\rightarrow FIB'\ 0\ 1\ 0\ 2
-\\&=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'\ 0\ 1\ 0\ 2
-\\&\rightarrow (\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ 0\ 1\ 0\ 2
-\\&\rightarrow (\lambda b . \lambda j . \lambda n . IF (=\ j\ n)\ b\ (FIB'\ b\ (+\ 0\ b)\ (+\ j\ 1)\ n))\ 1\ 0\ 2
-\\&\rightarrow (\lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ j\ 1)\ n))\ 0\ 2
-\\&\rightarrow (\lambda n . IF\ (=\ 0\ n)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ n))\ 2
-\\&\rightarrow (IF\ (=\ 0\ 2)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))
-\\&\rightarrow (IF\ (FALSE)\ b\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))
+\\&= ((\lambda x . \lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n)))) FIB')\ 0\ 1\ 0\ 2
+\\&\rightarrow ((\lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n)))))\ 0\ 1\ 0\ 2
+\\&\rightarrow ((\lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ b\ (FIB'\ 0\ (+\ 0\ b)\ (+\ j\ 1)\ n)))))\ 1\ 0\ 2
+\\&\rightarrow ((\lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ 1\ (FIB'\ 0\ (+\ 0\ 1)\ (+\ j\ 1)\ n)))))\ 0\ 2
+\\&\rightarrow ((\lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ 0\ n)\ 1\ (FIB'\ 0\ (+\ 0\ 1)\ (+\ 0\ 1)\ n)))))\ 2
+\\&\rightarrow (IF\ (=\ 0\ 2)\ 0\ (IF\ (=\ 2\ 1)\ 1\ (IF\ (=\ 0\ 2)\ 1\ (FIB'\ 0\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))))
+\\&\rightarrow (IF\ FALSE\ 0\ (IF\ (=\ 2\ 1)\ 1\ (IF\ (=\ 0\ 2)\ 1\ (FIB'\ 0\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))))
+\\&\rightarrow (IF\ FALSE\ 0\ (IF\ FALSE\ 1\ (IF\ (=\ 0\ 2)\ 0\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))))
+\\&\rightarrow (IF\ FALSE\ 0\ (IF\ FALSE\ 0\ (IF\ (FALSE)\ 1\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))))
+\\&\rightarrow (IF\ FALSE\ 1\ (IF\ (FALSE)\ 0\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2)))
+\\&\rightarrow (IF\ (FALSE)\ 0\ (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2))
 \\&\rightarrow (FIB'\ 1\ (+\ 0\ 1)\ (+\ 0\ 1)\ 2)
 \\&\rightarrow (FIB'\ 1\ 1\ (+\ 0\ 1)\ 2)
 \\&\rightarrow (FIB'\ 1\ 1\ 1\ 2)
-\\&=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'\ 1\ 1\ 1\ 2
-\\&\rightarrow(\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ 1\ 1\ 1\ 2
-\\&\rightarrow(\lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ 1\ b)\ (+\ j\ 1)\ n))\ 1\ 1\ 2
-\\&\rightarrow(\lambda j . \lambda n . IF\ (=\ j\ n)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ j\ 1)\ n))\ 1\ 2
-\\&\rightarrow(\lambda n . IF\ (=\ 1\ n)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ n))\ 2
-\\&\rightarrow(IF\ (=\ 1\ 2)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))
-\\&\rightarrow(IF\ (FALSE)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))
+\\&= ((\lambda x . \lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n)))) FIB')\ 1\ 1\ 1\ 2
+\\&\rightarrow (\lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))))\ 1\ 1\ 1\ 2
+\\&\rightarrow (\lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ 1\ (FIB'\ b\ (+\ 1\ b)\ (+\ j\ 1)\ n))))\ 1\ 1\ 2
+\\&\rightarrow (\lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ j\ 1)\ n))))\ 1\ 2
+\\&\rightarrow (IF\ (=\ 0\ 2)\ 0\ (IF\ (=\ 2\ 1)\ 1\ (IF\ (=\ 1\ 2)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))))
+\\&\rightarrow (IF\ (FALSE)\ 0\ (IF\ (=\ 2\ 1)\ 1\ (IF\ (=\ 1\ 2)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))))
+\\&\rightarrow (IF\ (FALSE)\ 0\ (IF\ (FALSE)\ 1\ (IF\ (=\ 1\ 2)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))))
+\\&\rightarrow (IF\ (FALSE)\ 0\ (IF\ (FALSE)\ 1\ (IF\ (FALSE)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))))
+\\&\rightarrow (IF\ (FALSE)\ 1\ (IF\ (FALSE)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2)))
+\\&\rightarrow (IF\ (FALSE)\ 1\ (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2))
 \\&\rightarrow (FIB'\ 1\ (+\ 1\ 1)\ (+\ 1\ 1)\ 2)
 \\&\rightarrow (FIB'\ 1\ 2\ (+\ 1\ 1)\ 2)
 \\&\rightarrow (FIB'\ 1\ 2\ 2\ 2)
-\\&=(\lambda x . \lambda a . \lambda b . \lambda j . \lambda n . IF (=\ j\ n)\ b\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ FIB'\ 1\ 2\ 2\ 2
-\\&\rightarrow(\lambda a . \lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))\ 1\ 2\ 2\ 2
-\\&\rightarrow(\lambda b . \lambda j . \lambda n . IF\ (=\ j\ n)\ b\ (FIB'\ b\ (+\ 1\ b)\ (+\ j\ 1)\ n))\ 2\ 2\ 2
-\\&\rightarrow(\lambda j . \lambda n . IF\ (=\ j\ n)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ j\ 1)\ n))\ 2\ 2
-\\&\rightarrow(\lambda n . IF\ (=\ 2\ n)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ n))\ 2
-\\&\rightarrow(IF\ (=\ 2\ 2)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2))
-\\&\rightarrow(IF\ (TRUE)\ 2\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2))
-\\&\rightarrow\ 2
+\\&= ((\lambda x . \lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (x\ b\ (+\ a\ b)\ (+\ j\ 1)\ n)))) FIB')\ 1\ 2\ 2\ 2
+\\&\rightarrow (\lambda a . \lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ \\&\ \ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ a\ (FIB'\ b\ (+\ a\ b)\ (+\ j\ 1)\ n))))\ 1\ 2\ 2\ 2
+\\&\rightarrow (\lambda b . \lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ 1\ (FIB'\ b\ (+\ 1\ b)\ (+\ j\ 1)\ n))))\ 2\ 2\ 2
+\\&\rightarrow (\lambda j . \lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ j\ n)\ 1\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ j\ 1)\ n))))\ 2\ 2
+\\&\rightarrow (\lambda n .IF\ (=\ 0\ n)\ 0\ (IF\ (=\ n\ 1)\ 1\ (IF\ (=\ 2\ n)\ 1\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ n))))\ 2
+\\&\rightarrow (IF\ (=\ 0\ 2)\ 0\ (IF\ (=\ 2\ 1)\ 1\ (IF\ (=\ 2\ 2)\ 1\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2))))
+\\&\rightarrow (IF\ (FALSE)\ 0\ (IF\ (FALSE)\ 1\ (IF\ (TRUE)\ 1\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2))))
+\\&\rightarrow (IF\ (FALSE)\ 1\ (IF\ (TRUE)\ 1\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2)))
+\\&\rightarrow (IF\ (TRUE)\ 1\ (FIB'\ 2\ (+\ 1\ 2)\ (+\ 2\ 1)\ 2))
+\\&\rightarrow\ 1
 \end{align*}
 
 \end{enumerate}
